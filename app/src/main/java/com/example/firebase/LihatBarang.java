@@ -16,18 +16,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
 public class LihatBarang extends AppCompatActivity {
+    /**
+     * Mendefinisikan variable yang akan dipakai
+     */
     private DatabaseReference database;
     private RecyclerView rvView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Barang> daftarBarang;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lihat_barang);
 
-        /* Inisialisasi RecyclerView & komponennya  */
+        /**
+         * Inisialisasi RecyclerView & komponennya
+         */
         rvView = (RecyclerView) findViewById(R.id.rv_main);
         rvView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -55,7 +62,7 @@ public class LihatBarang extends AppCompatActivity {
                      * untuk keperluan Edit dan Delete data
                      */
                     Barang barang = noteDataSnapshot.getValue(Barang.class);
-                    barang.setKode(noteDataSnapshot.getKey());
+                    barang.setMainKey(noteDataSnapshot.getKey());
 
                     /**
                      * Menambahkan object Barang yang sudah dimapping
@@ -70,7 +77,9 @@ public class LihatBarang extends AppCompatActivity {
                  */
                 adapter = new AdapterLihatBarang(daftarBarang, LihatBarang.this);
                 rvView.setAdapter(adapter);
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 /**
@@ -78,11 +87,12 @@ public class LihatBarang extends AppCompatActivity {
                  * pengambilan data gagal dan memprint error nya
                  * ke LogCat
                  */
-                System.out.println(databaseError.getDetails()+" "+databaseError.getMessage());
+                System.out.println(databaseError.getDetails() + " " + databaseError.getMessage());
             }
         });
     }
-    public static Intent getActIntent(Activity activity){
+
+    public static Intent getActIntent(Activity activity) {
         return new Intent(activity, LihatBarang.class);
     }
 }
